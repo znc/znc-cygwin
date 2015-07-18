@@ -1,0 +1,40 @@
+NAME="znc"
+VERSION=1.6.0
+RELEASE=1
+HOMEPAGE="http://znc.in/"
+SRC_URI="http://znc.in/releases/archive/znc-${VERSION}.tar.gz"
+PKG_NAMES="znc znc-devel znc-perl znc-python"
+
+znc_SUMMARY="Advanced IRC bouncer"
+znc_DESCRIPTION="ZNC is an IRC network bouncer (BNC). It can detach
+the client from the actual IRC server, and also from selected channels.
+Multiple clients from different locations can connect to a single ZNC account
+simultaneously and therefore appear under the same nickname on IRC.
+It supports SSL secured connections and IPv6."
+znc_CONTENTS="usr"
+znc_CATEGORY="Net"
+
+znc_devel_SUMMARY="Modules development for ZNC"
+znc_devel_DESCRIPTION="This package contains tools to build ZNC modules written on C++."
+znc_devel_CONTENTS="usr/bin/znc-buildmod usr/include usr/lib/pkgconfig"
+znc_devel_CATEGORY="Net Devel"
+znc_devel_REQUIRES="znc openssl-devel libicu-devel gcc-g++"
+
+znc_perl_SUMMARY="Support for ZNC modules written on Perl"
+znc_perl_DESCRIPTION="This package contains Perl bindings for ZNC."
+znc_perl_CONTENTS="usr/lib/znc/modperl.so usr/lib/znc/modperl usr/lib/znc/*.pm"
+znc_perl_CATEGORY="Net Perl"
+
+znc_python_SUMMARY="Support for ZNC modules written on Python3"
+znc_python_DESCRIPTION="This package contains Python3 bindings for ZNC."
+znc_python_CONTENTS="usr/lib/znc/modpython.so usr/lib/znc/modpython"
+znc_python_CATEGORY="Net Python"
+
+for exclude in $znc_devel_CONTENTS $znc_perl_CONTENTS $znc_python_CONTENTS; do
+	znc_CONTENTS="--exclude=$exclude $znc_CONTENTS"
+done
+
+# libcrypt-devel is here only because modperl refuses to compile without it, but only on x86_64
+DEPEND="zlib-devel openssl-devel libcrypt-devel libsasl2-devel libicu-devel gcc-g++ make pkg-config perl python3"
+CYGCONF_ARGS="--enable-zlib --enable-openssl --enable-cyrus --enable-charset --enable-perl --enable-python"
+inherit autotools
