@@ -37,4 +37,5 @@ done
 # libcrypt-devel is here only because modperl refuses to compile without it, but only on x86_64
 DEPEND="zlib-devel openssl-devel libcrypt-devel libsasl2-devel libicu-devel gcc-g++ make pkg-config perl python3"
 CYGCONF_ARGS="--enable-zlib --enable-openssl --enable-cyrus --enable-charset --enable-perl --enable-python"
+inherit python3
 inherit autotools
