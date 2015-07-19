@@ -1,0 +1,39 @@
+diff --git a/Makefile.in b/Makefile.in
+index 0b78e4c..e1a930d 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -87,7 +87,7 @@ znc: $(OBJS)
+ else
+ znc: $(BIN_OBJS) $(LIBZNC)
+ 	$(E) Linking znc...
+-	$(Q)$(CXX) $(LDFLAGS) -o $@ $(BIN_OBJS) -L. -lznc -Wl,-rpath,$(LIBZNCDIR) $(LIBS)
++	$(Q)$(CXX) $(LDFLAGS) -o $@ $(BIN_OBJS) -L. -lznc-1.6 -Wl,-rpath,$(LIBZNCDIR) $(LIBS)
+ 
+ $(LIBZNC): $(LIB_OBJS)
+ 	$(E) Linking $(LIBZNC)...
+diff --git a/configure.ac b/configure.ac
+index 52d6afc..a6cd88c 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -473,7 +473,7 @@ if test -z "$ISCYGWIN" ; then
+ 	appendMod -fPIC
+ else
+ 	# But cygwin does want most of ZNC in a shared lib
+-	LIBZNC="libznc.dll"
++	LIBZNC="cygznc-1.6.dll"
+ 	LIBZNCDIR="$bindir"
+ fi
+ 
+diff --git a/modules/Makefile.in b/modules/Makefile.in
+index 0dea7da..54654e4 100644
+--- a/modules/Makefile.in
++++ b/modules/Makefile.in
+@@ -62,7 +62,7 @@ C=
+ endif
+ 
+ ifneq "$(LIBZNC)" ""
+-LDFLAGS += -L.. -lznc -Wl,-rpath,$(LIBZNCDIR)
++LDFLAGS += -L.. -lznc-1.6 -Wl,-rpath,$(LIBZNCDIR)
+ endif
+ 
+ CLEAN    :=
