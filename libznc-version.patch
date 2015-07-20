@@ -37,3 +37,16 @@ index 0dea7da..54654e4 100644
  endif
  
  CLEAN    :=
+diff --git a/znc-buildmod.in b/znc-buildmod.in
+index e9b3f9b..ff4ac23 100755
+--- a/znc-buildmod.in
++++ b/znc-buildmod.in
+@@ -39,7 +39,7 @@ LIBZNCDIR="@LIBZNCDIR@"
+ if test "x" = "x$LIBZNC"; then
+     LIBZNCFLAGS=""
+ else
+-    LIBZNCFLAGS="-L\"$LIBZNCDIR\" -lznc"
++    LIBZNCFLAGS="-L\"$LIBZNCDIR\" -lznc-1.6"
+ fi
+ 
+ LDFLAGS="$LIBZNCFLAGS $LDFLAGS"
