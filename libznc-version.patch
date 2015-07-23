@@ -24,6 +24,17 @@ index 52d6afc..a6cd88c 100644
  	LIBZNCDIR="$bindir"
  fi
  
+--- a/configure
++++ b/configure
+@@ -4890,7 +4890,7 @@ if test -z "$ISCYGWIN" ; then
+ 	appendMod -fPIC
+ else
+ 	# But cygwin does want most of ZNC in a shared lib
+-	LIBZNC="libznc.dll"
++	LIBZNC="cygznc-1.6.dll"
+ 	LIBZNCDIR="$bindir"
+ fi
+ 
 diff --git a/modules/Makefile.in b/modules/Makefile.in
 index 0dea7da..54654e4 100644
 --- a/modules/Makefile.in
@@ -46,7 +57,7 @@ index e9b3f9b..ff4ac23 100755
      LIBZNCFLAGS=""
  else
 -    LIBZNCFLAGS="-L\"$LIBZNCDIR\" -lznc"
-+    LIBZNCFLAGS="-L\"$LIBZNCDIR\" -lznc-1.6"
++    LIBZNCFLAGS="-L$LIBZNCDIR -lznc-1.6"
  fi
  
  LDFLAGS="$LIBZNCFLAGS $LDFLAGS"

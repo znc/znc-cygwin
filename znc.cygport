@@ -1,6 +1,6 @@
 NAME="znc"
 VERSION=1.6.0
-RELEASE=3
+RELEASE=4
 HOMEPAGE="http://znc.in/"
 SRC_URI="http://znc.in/releases/archive/znc-${VERSION}.tar.gz"
 PATCH_URI="libznc-version.patch version-extra.patch"
@@ -39,5 +39,7 @@ done
 DEPEND="zlib-devel openssl-devel libcrypt-devel libsasl2-devel libicu-devel gcc-g++ make pkg-config perl python3"
 CYGCONF_ARGS="--enable-zlib --enable-openssl --enable-cyrus --enable-charset --enable-perl --enable-python"
 CXXFLAGS="$CXXFLAGS -DVERSION_EXTRA=\\\"+cygwin$RELEASE\\\""
+ACLOCAL_FLAGS="-I m4"
+
 inherit python3
 inherit autotools
