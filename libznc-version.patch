@@ -1,32 +1,29 @@
 diff --git a/Makefile.in b/Makefile.in
-index 0b78e4c..e1a930d 100644
+index d82c0ea..0d5c30a 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -87,7 +87,7 @@ znc: $(OBJS)
- else
- znc: $(BIN_OBJS) $(LIBZNC)
- 	$(E) Linking znc...
--	$(Q)$(CXX) $(LDFLAGS) -o $@ $(BIN_OBJS) -L. -lznc -Wl,-rpath,$(LIBZNCDIR) $(LIBS)
-+	$(Q)$(CXX) $(LDFLAGS) -o $@ $(BIN_OBJS) -L. -lznc-1.6 -Wl,-rpath,$(LIBZNCDIR) $(LIBS)
+@@ -91,7 +91,7 @@ znc: $(BIN_OBJS) $(LIBZNC)
  
  $(LIBZNC): $(LIB_OBJS)
  	$(E) Linking $(LIBZNC)...
+-	$(Q)$(CXX) $(LDFLAGS) -shared -o $@ $(LIB_OBJS) $(LIBS)
++	$(Q)$(CXX) $(LDFLAGS) -shared -o $@ $(LIB_OBJS) $(LIBS) -Wl,--out-implib=libznc.dll.a
+ endif
+ 
+ unittest: $(LIB_OBJS) test/gtest-all.o test/gtest-main.o $(TESTS)
+@@ -178,6 +178,7 @@ install: znc $(LIBZNC)
+ 	find $(DESTDIR)$(DATADIR)/webskins -type d -exec chmod 0755 '{}' \;
+ 	find $(DESTDIR)$(DATADIR)/webskins -type f -exec chmod 0644 '{}' \;
+ 	$(INSTALL_PROGRAM) znc $(DESTDIR)$(bindir)
++	$(INSTALL_PROGRAM) libznc.dll.a $(DESTDIR)$(libdir)
+ 	$(INSTALL_SCRIPT) znc-buildmod $(DESTDIR)$(bindir)
+ 	$(INSTALL_DATA) $(srcdir)/include/znc/*.h $(DESTDIR)$(includedir)/znc
+ 	$(INSTALL_DATA) include/znc/zncconfig.h $(DESTDIR)$(includedir)/znc
 diff --git a/configure.ac b/configure.ac
-index 52d6afc..a6cd88c 100644
+index 3a64922..2465e54 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -473,7 +473,7 @@ if test -z "$ISCYGWIN" ; then
- 	appendMod -fPIC
- else
- 	# But cygwin does want most of ZNC in a shared lib
--	LIBZNC="libznc.dll"
-+	LIBZNC="cygznc-1.6.dll"
- 	LIBZNCDIR="$bindir"
- fi
- 
---- a/configure
-+++ b/configure
-@@ -4890,7 +4890,7 @@ if test -z "$ISCYGWIN" ; then
+@@ -429,7 +429,7 @@ if test -z "$ISCYGWIN" ; then
  	appendMod -fPIC
  else
  	# But cygwin does want most of ZNC in a shared lib
@@ -36,7 +33,7 @@ index 52d6afc..a6cd88c 100644
  fi
  
 diff --git a/modules/Makefile.in b/modules/Makefile.in
-index 0dea7da..54654e4 100644
+index 0dea7da..bc6c64d 100644
 --- a/modules/Makefile.in
 +++ b/modules/Makefile.in
 @@ -62,7 +62,7 @@ C=
@@ -44,12 +41,38 @@ index 0dea7da..54654e4 100644
  
  ifneq "$(LIBZNC)" ""
 -LDFLAGS += -L.. -lznc -Wl,-rpath,$(LIBZNCDIR)
-+LDFLAGS += -L.. -lznc-1.6 -Wl,-rpath,$(LIBZNCDIR)
++LIBS += -L.. -lznc -Wl,-rpath,$(LIBZNCDIR)
  endif
  
  CLEAN    :=
+diff --git a/modules/modperl/Makefile.inc b/modules/modperl/Makefile.inc
+index abc938c..303ef38 100644
+--- a/modules/modperl/Makefile.inc
++++ b/modules/modperl/Makefile.inc
+@@ -44,7 +44,7 @@ modperl_all: modperl/ZNC.$(PERLCEXT_EXT) modperl/swigperlrun.h modperl/functions
+ 
+ modperl/ZNC.$(PERLCEXT_EXT): modperl/ZNC.o Makefile modperl.so
+ 	$(E) Linking ZNC Perl bindings library...
+-	$(Q)$(CXX) $(MODFLAGS) $(LDFLAGS) $(MODLINK) -o $@ $< $(PERL_LD) $(PERLDEPONMOD)
++	$(Q)$(CXX) $(MODFLAGS) $(LDFLAGS) $(MODLINK) -o $@ $< $(PERL_LD) $(PERLDEPONMOD) $(LIBS)
+ 
+ modperl/ZNC.o: modperl/ZNC.cpp Makefile
+ 	@mkdir -p modperl
+diff --git a/modules/modpython/Makefile.inc b/modules/modpython/Makefile.inc
+index c0cde99..e41758e 100644
+--- a/modules/modpython/Makefile.inc
++++ b/modules/modpython/Makefile.inc
+@@ -52,7 +52,7 @@ modpython/_znc_core.o: modpython/_znc_core.cpp Makefile
+ 
+ modpython/_znc_core.$(PYCEXT_EXT): modpython/_znc_core.o Makefile modpython.so
+ 	$(E) Linking ZNC python bindings library...
+-	$(Q)$(CXX) $(MODFLAGS) $(LDFLAGS) $(MODLINK) -o $@ $< $(PY_LDFLAGS) $(PYDEPONMOD)
++	$(Q)$(CXX) $(MODFLAGS) $(LDFLAGS) $(MODLINK) -o $@ $< $(PY_LDFLAGS) $(PYDEPONMOD) $(LIBS)
+ 
+ ifneq "$(SWIG)" ""
+ include $(srcdir)/modpython/Makefile.gen
 diff --git a/znc-buildmod.in b/znc-buildmod.in
-index e9b3f9b..ff4ac23 100755
+index e9b3f9b..1aa0e79 100755
 --- a/znc-buildmod.in
 +++ b/znc-buildmod.in
 @@ -39,7 +39,7 @@ LIBZNCDIR="@LIBZNCDIR@"
@@ -57,7 +80,7 @@ index e9b3f9b..ff4ac23 100755
      LIBZNCFLAGS=""
  else
 -    LIBZNCFLAGS="-L\"$LIBZNCDIR\" -lznc"
-+    LIBZNCFLAGS="-L$LIBZNCDIR -lznc-1.6"
++    LIBZNCFLAGS="-L$LIBZNCDIR -lznc"
  fi
  
  LDFLAGS="$LIBZNCFLAGS $LDFLAGS"
