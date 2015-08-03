@@ -1,7 +1,7 @@
 # There is a pre-installed cygwin: http://help.appveyor.com/discussions/suggestions/427-pre-install-cygwin
 # But it's old and misses some stuff anyway
 version: 0.0.0.0.1-branch-{branch}-build-{build}
-clone_depth: 10
+shallow_clone: true
 cache:
     - c:\cygwin-setup-cache
 environment:
