@@ -71,16 +71,3 @@ index c0cde99..e41758e 100644
  
  ifneq "$(SWIG)" ""
  include $(srcdir)/modpython/Makefile.gen
-diff --git a/znc-buildmod.in b/znc-buildmod.in
-index e9b3f9b..1aa0e79 100755
---- a/znc-buildmod.in
-+++ b/znc-buildmod.in
-@@ -39,7 +39,7 @@ LIBZNCDIR="@LIBZNCDIR@"
- if test "x" = "x$LIBZNC"; then
-     LIBZNCFLAGS=""
- else
--    LIBZNCFLAGS="-L\"$LIBZNCDIR\" -lznc"
-+    LIBZNCFLAGS="-L$LIBZNCDIR -lznc"
- fi
- 
- LDFLAGS="$LIBZNCFLAGS $LDFLAGS"
