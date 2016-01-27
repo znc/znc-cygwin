@@ -1,0 +1,13 @@
+diff --git a/znc-buildmod.in b/znc-buildmod.in
+index f1c9ccc..553bedf 100755
+--- a/znc-buildmod.in
++++ b/znc-buildmod.in
+@@ -42,7 +42,7 @@ else
+     LIBZNCFLAGS="-L$LIBZNCDIR -lznc"
+ fi
+ 
+-LDFLAGS="$LIBZNCFLAGS $LDFLAGS"
++LIBS="$LIBZNCFLAGS $LIBS"
+ 
+ while test ! -z "$1"
+ do
