@@ -1,9 +1,9 @@
 NAME="znc"
-VERSION=1.6.2
-RELEASE=2
+VERSION=1.6.3
+RELEASE=1
 HOMEPAGE="http://znc.in/"
 SRC_URI="http://znc.in/releases/archive/znc-${VERSION}.tar.gz"
-PATCH_URI="libznc-version.patch buildmod.patch"
+PATCH_URI="libznc-version.patch"
 PKG_NAMES="znc znc-devel znc-perl znc-python"
 
 znc_SUMMARY="Advanced IRC bouncer"
