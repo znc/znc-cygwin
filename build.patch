@@ -1,0 +1,82 @@
+commit f1ef8c79db7f8d04c5105eb817bd57a9c3ea0b4e
+Author: Alexey Sokolov <alexey+znc@asokolov.org>
+Date:   Tue Jul 19 22:24:27 2016 +0100
+
+    Fix cygwin build
+
+diff --git a/include/znc/Utils.h b/include/znc/Utils.h
+index 8312792..5251ad0 100644
+--- a/include/znc/Utils.h
++++ b/include/znc/Utils.h
+@@ -205,16 +205,17 @@ class CBlowfish {
+     CBlowfish& operator=(const CBlowfish&) = default;
+ 
+     //! output must be freed
+-    static unsigned char* MD5(const unsigned char* input, u_int ilen);
++    static unsigned char* MD5(const unsigned char* input, unsigned int ilen);
+ 
+     //! returns an md5 of the CString (not hex encoded)
+     static CString MD5(const CString& sInput, bool bHexEncode = false);
+ 
+     //! output must be the same size as input
+-    void Crypt(unsigned char* input, unsigned char* output, u_int ibytes);
++    void Crypt(unsigned char* input, unsigned char* output,
++               unsigned int ibytes);
+ 
+     //! must free result
+-    unsigned char* Crypt(unsigned char* input, u_int ibytes);
++    unsigned char* Crypt(unsigned char* input, unsigned int ibytes);
+     CString Crypt(const CString& sData);
+ 
+   private:
+diff --git a/src/Utils.cpp b/src/Utils.cpp
+index ab25966..32f22c0 100644
+--- a/src/Utils.cpp
++++ b/src/Utils.cpp
+@@ -14,6 +14,13 @@
+  * limitations under the License.
+  */
+ 
++#ifndef _XOPEN_SOURCE
++// strptime() wants this
++#define _XOPEN_SOURCE 600
++#endif
++
++
++
+ #include <znc/Utils.h>
+ #include <znc/ZNCDebug.h>
+ #include <znc/FileUtils.h>
+@@ -22,6 +29,7 @@
+ #include <openssl/ssl.h>
+ #endif /* HAVE_LIBSSL */
+ #include <unistd.h>
++#include <time.h>
+ 
+ #ifdef HAVE_TCSETATTR
+ #include <termios.h>
+@@ -713,7 +721,7 @@ CBlowfish::CBlowfish(const CString& sPassword, int iEncrypt,
+ CBlowfish::~CBlowfish() { free(m_ivec); }
+ 
+ //! output must be freed
+-unsigned char* CBlowfish::MD5(const unsigned char* input, u_int ilen) {
++unsigned char* CBlowfish::MD5(const unsigned char* input, unsigned int ilen) {
+     unsigned char* output = (unsigned char*)malloc(MD5_DIGEST_LENGTH);
+     ::MD5(input, ilen, output);
+     return output;
+@@ -740,13 +748,13 @@ CString CBlowfish::MD5(const CString& sInput, bool bHexEncode) {
+ 
+ //! output must be the same size as input
+ void CBlowfish::Crypt(unsigned char* input, unsigned char* output,
+-                      u_int uBytes) {
++                      unsigned int uBytes) {
+     BF_cfb64_encrypt(input, output, uBytes, &m_bkey, m_ivec, &m_num,
+                      m_iEncrypt);
+ }
+ 
+ //! must free result
+-unsigned char* CBlowfish::Crypt(unsigned char* input, u_int uBytes) {
++unsigned char* CBlowfish::Crypt(unsigned char* input, unsigned int uBytes) {
+     unsigned char* buff = (unsigned char*)malloc(uBytes);
+     Crypt(input, buff, uBytes);
+     return buff;
