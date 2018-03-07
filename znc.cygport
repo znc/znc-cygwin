@@ -1,8 +1,8 @@
 NAME="znc"
 VERSION=1.6.6
 RELEASE=1
-HOMEPAGE="http://znc.in/"
-SRC_URI="http://znc.in/releases/archive/znc-${VERSION}.tar.gz"
+HOMEPAGE="https://znc.in/"
+SRC_URI="https://znc.in/releases/archive/znc-${VERSION}.tar.gz"
 PATCH_URI="
 	libznc-version.patch
 	"
