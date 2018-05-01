@@ -1,11 +1,9 @@
 NAME="znc"
-VERSION=1.6.6
+VERSION=1.7.0
 RELEASE=1
 HOMEPAGE="https://znc.in/"
 SRC_URI="https://znc.in/releases/archive/znc-${VERSION}.tar.gz"
-PATCH_URI="
-	libznc-version.patch
-	"
+PATCH_URI=""
 PKG_NAMES="znc znc-devel znc-perl znc-python"
 
 znc_SUMMARY="Advanced IRC bouncer"
@@ -38,10 +36,10 @@ for exclude in $znc_devel_CONTENTS $znc_perl_CONTENTS $znc_python_CONTENTS; do
 done
 
 # libcrypt-devel is here only because modperl refuses to compile without it, but only on x86_64
-DEPEND="zlib-devel openssl-devel libcrypt-devel libsasl2-devel libicu-devel gcc-g++ make pkg-config perl python3"
+DEPEND="zlib-devel openssl-devel libcrypt-devel libsasl2-devel libicu-devel gcc-g++ make pkg-config perl python3 cmake libboost-devel"
 CYGCONF_ARGS="--enable-zlib --enable-openssl --enable-cyrus --enable-charset --enable-perl --enable-python"
 CXXFLAGS="$CXXFLAGS -DVERSION_EXTRA=\\\"+cygwin$RELEASE\\\""
 ACLOCAL_FLAGS="-I m4"
 
 inherit python3
-inherit autotools
+inherit cmake
