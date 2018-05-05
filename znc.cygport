@@ -28,7 +28,7 @@ znc_perl_CATEGORY="Net Perl"
 
 znc_python_SUMMARY="Support for ZNC modules written on Python3"
 znc_python_DESCRIPTION="This package contains Python3 bindings for ZNC."
-znc_python_CONTENTS="usr/lib/znc/modpython.so usr/lib/znc/modpython"
+znc_python_CONTENTS="usr/lib/znc/modpython.so usr/lib/znc/modpython usr/lib/znc/*.py"
 znc_python_CATEGORY="Net Python"
 
 for exclude in $znc_devel_CONTENTS $znc_perl_CONTENTS $znc_python_CONTENTS; do
