@@ -17,7 +17,7 @@ znc_CATEGORY="Net"
 
 znc_devel_SUMMARY="Modules development for ZNC"
 znc_devel_DESCRIPTION="This package contains tools to build ZNC modules written on C++."
-znc_devel_CONTENTS="usr/bin/znc-buildmod usr/include usr/lib/pkgconfig usr/lib/libznc.dll.a"
+znc_devel_CONTENTS="usr/bin/znc-buildmod usr/include usr/lib/pkgconfig usr/lib/libznc.dll.a usr/share/znc/cmake"
 znc_devel_CATEGORY="Net Devel"
 znc_devel_REQUIRES="znc openssl-devel libicu-devel gcc-g++"
 
