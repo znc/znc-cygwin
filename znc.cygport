@@ -1,5 +1,5 @@
 NAME="znc"
-VERSION=1.7.2
+VERSION=1.7.3
 RELEASE=1
 HOMEPAGE="https://znc.in/"
 SRC_URI="https://znc.in/releases/archive/znc-${VERSION}.tar.gz"
