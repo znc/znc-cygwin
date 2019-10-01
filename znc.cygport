@@ -2,7 +2,7 @@ NAME="znc"
 VERSION=1.7.5
 RELEASE=1
 HOMEPAGE="https://znc.in/"
-SRC_URI="https://znc.asokolov.org/znc-${VERSION}.tar.gz"
+SRC_URI="https://znc.in/releases/archive/znc-${VERSION}.tar.gz"
 PATCH_URI=""
 PKG_NAMES="znc znc-devel znc-perl znc-python"
 
