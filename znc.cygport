@@ -36,7 +36,7 @@ for exclude in $znc_devel_CONTENTS $znc_perl_CONTENTS $znc_python_CONTENTS; do
 done
 
 # libcrypt-devel is here only because modperl refuses to compile without it, but only on x86_64
-DEPEND="zlib-devel libssl-devel libcrypt-devel libsasl2-devel libicu-devel gcc-g++ ninja pkg-config perl python3 cmake libboost-devel"
+BUILD_REQUIRES="zlib-devel libssl-devel libcrypt-devel libsasl2-devel libicu-devel gcc-g++ ninja pkg-config perl python3-devel cmake libboost-devel"
 CYGCMAKE_ARGS="-DWANT_ZLIB=YES -DWANT_OPENSSL=YES -DWANT_CYRUS=YES -DWANT_ICU=YES -DWANT_PERL=YES -DWANT_PYTHON=YES -DVERSION_EXTRA=+cygwin$RELEASE"
 
 inherit python3
