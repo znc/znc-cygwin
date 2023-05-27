@@ -1,6 +1,6 @@
 NAME="znc"
 VERSION=1.8.2
-RELEASE=4
+RELEASE=5
 HOMEPAGE="https://znc.in/"
 SRC_URI="https://znc.in/releases/archive/znc-${VERSION}.tar.gz"
 PATCH_URI=""
